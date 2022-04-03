@@ -1,10 +1,18 @@
 import React from "react";
 import ImageCard from "../ImageCard";
-const LeftSide = () => {
+const LeftSide = (props) => {
   return (
     <div>
       {" "}
-      <ImageCard />{" "}
+      {props.data.map((item, i) => {
+        return (
+          <ImageCard
+            image={item.Image}
+            likes={item.likes}
+            timestamp={item.timestamp}
+          />
+        );
+      })}
     </div>
   );
 };

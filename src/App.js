@@ -4,13 +4,14 @@ import {
   Divider,
   Grid,
   Paper,
+  Skeleton,
   styled,
   ThemeProvider,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import Header from "./components/Header";
 import LeftSide from "./components/LeftSide/index";
-import requestApi from "./config/apiHandler";
 import { globalTheme } from "./style/theme";
 
 const theme = createTheme(globalTheme);
@@ -26,24 +27,15 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function App() {
-  const [Loading, setLoading] = useState(false);
-  const [Data, setData] = useState();
+  const { isLoading, error, data } = useQuery("repoData", () =>
+    fetch(
+      "https://s3-ap-southeast-1.amazonaws.com/he-public-data/instaf913f18.json"
+    ).then((res) => res.json())
+  );
+
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const data = await requestApi("/", "GET");
-      if (data) {
-        setData(data);
-        setLoading(false);
-      }
-    };
-
-    // call the function
-
-    fetchData()
-      // make sure to catch any error
-      .catch(console.error);
-  }, []);
+    console.log(data);
+  }, [data]);
   return (
     <ThemeProvider theme={theme}>
       <Header />
@@ -51,21 +43,34 @@ function App() {
       <Box sx={{ flexGrow: 1 }} mt={2}>
         <Grid container spacing={2} columns={12}>
           <Grid item xs={4}>
-            <Item>
-              <LeftSide mt={2} />
-              <Divider mt={2} />
-              <LeftSide mt={2} />
-              <Divider mt={2} />
-              <LeftSide mt={2} />
-              <Divider mt={2} />
-              <LeftSide mt={2} />
-              <Divider mt={2} />
-              <LeftSide mt={2} />
+            <Item
+              sx={{
+                // height: "100vh",
+                backgroundColor: "rgba(250,250,250,255)",
+              }}
+            >
+              {isLoading ? (
+                <>
+                  <Skeleton variant="rectangular" height={100} />;
+                  <Skeleton variant="rectangular" height={100} />;
+                  <Skeleton variant="rectangular" height={100} />;
+                  <Skeleton variant="rectangular" height={100} />;
+                  <Skeleton variant="rectangular" height={100} />;
+                  <Skeleton variant="rectangular" height={100} />;
+                  <Skeleton variant="rectangular" height={100} />;
+                </>
+              ) : (
+                <LeftSide mt={2} data={data} />
+              )}
               <Divider mt={2} />
             </Item>
           </Grid>
           <Grid item xs={8}>
-            <Item>xs=6</Item>
+            <Item
+              sx={{ height: "100vh", backgroundColor: "rgba(250,250,250,255)" }}
+            >
+              xs=6
+            </Item>
           </Grid>
         </Grid>
       </Box>
