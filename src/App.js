@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import Header from "./components/Header";
 import LeftSide from "./components/LeftSide/index";
+import RightSide from "./components/RightSide/index";
 import { globalTheme } from "./style/theme";
 
 const theme = createTheme(globalTheme);
@@ -27,6 +28,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function App() {
+  const [previewData, setPreviewData] = useState();
   const { isLoading, error, data } = useQuery("repoData", () =>
     fetch(
       "https://s3-ap-southeast-1.amazonaws.com/he-public-data/instaf913f18.json"
@@ -36,6 +38,9 @@ function App() {
   useEffect(() => {
     console.log(data);
   }, [data]);
+  const handleClick = (image, likes, timestamp) => {
+    setPreviewData({ image, likes, timestamp });
+  };
   return (
     <ThemeProvider theme={theme}>
       <Header />
@@ -60,16 +65,19 @@ function App() {
                   <Skeleton variant="rectangular" height={100} />;
                 </>
               ) : (
-                <LeftSide mt={2} data={data} />
+                <LeftSide mt={2} data={data} handleClick={handleClick} />
               )}
               <Divider mt={2} />
             </Item>
           </Grid>
           <Grid item xs={8}>
             <Item
-              sx={{ height: "100vh", backgroundColor: "rgba(250,250,250,255)" }}
+              sx={{
+                //  height: "100vh",
+                backgroundColor: "rgba(250,250,250,255)",
+              }}
             >
-              xs=6
+              {previewData ? <RightSide data={previewData} /> : "No Preview"}
             </Item>
           </Grid>
         </Grid>

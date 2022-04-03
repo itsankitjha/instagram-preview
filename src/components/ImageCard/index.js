@@ -26,15 +26,23 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function ImageCard({ image, likes, timestamp }) {
+export default function ImageCard(props) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
+  const handleClick = () => {
+    props.handleClick(props.image, props.likes, props.timestamp);
+  };
   return (
-    <Card sx={{ maxWidth: 545, marginBottom: "20px" }}>
+    <Card
+      sx={{
+        maxWidth: props.component === "left" ? 545 : 945,
+
+        marginBottom: "20px",
+      }}
+    >
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -47,9 +55,16 @@ export default function ImageCard({ image, likes, timestamp }) {
           </IconButton>
         }
         title="Rohit Paella"
-        subheader={timestamp}
+        subheader={props.timestamp}
       />
-      <CardMedia component="img" height="194" image={image} alt="Paella dish" />
+      <CardMedia
+        component="img"
+        // height="194"
+        image={props.image}
+        alt="Paella dish"
+        sx={{ cursor: "pointer" }}
+        onClick={handleClick}
+      />
       <CardContent>
         <Typography
           gutterBottom
@@ -63,7 +78,7 @@ export default function ImageCard({ image, likes, timestamp }) {
             // fontWeight: 500,
           }}
         >
-          {likes} likes
+          {props.likes} likes
         </Typography>
       </CardContent>
       <CardActions disableSpacing sx={{ justifyContent: "space-between" }}>
