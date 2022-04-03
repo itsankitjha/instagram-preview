@@ -6,9 +6,10 @@ import {
   styled,
   ThemeProvider,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./components/Header";
 import LeftSide from "./components/LeftSide/index";
+import { requestApi } from "./config/apiHandler";
 import { globalTheme } from "./style/theme";
 
 const theme = createTheme(globalTheme);
@@ -24,6 +25,24 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function App() {
+  const [Loading, setLoading] = useState(false);
+  const [Data, setData] = useState();
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const data = await requestApi("/", "GET");
+      if (data) {
+        setData(data);
+        setLoading(false);
+      }
+    };
+
+    // call the function
+
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, []);
   return (
     <ThemeProvider theme={theme}>
       <Header />
