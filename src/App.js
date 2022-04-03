@@ -14,6 +14,7 @@ import Header from "./components/Header";
 import LeftSide from "./components/LeftSide/index";
 import RightSide from "./components/RightSide/index";
 import { globalTheme } from "./style/theme";
+import ApiHandler from "./config/ApiHandler";
 
 const theme = createTheme(globalTheme);
 
@@ -29,15 +30,12 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function App() {
   const [previewData, setPreviewData] = useState();
-  const { isLoading, error, data } = useQuery("repoData", () =>
-    fetch(
-      "https://s3-ap-southeast-1.amazonaws.com/he-public-data/instaf913f18.json"
-    ).then((res) => res.json())
-  );
+  const { isLoading, error, data } = ApiHandler();
 
   useEffect(() => {
     console.log(data);
   }, [data]);
+
   const handleClick = (image, likes, timestamp) => {
     setPreviewData({ image, likes, timestamp });
   };
