@@ -1,6 +1,7 @@
 import {
   Box,
   createTheme,
+  Divider,
   Grid,
   Paper,
   styled,
@@ -9,7 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import Header from "./components/Header";
 import LeftSide from "./components/LeftSide/index";
-import { requestApi } from "./config/apiHandler";
+import requestApi from "./config/apiHandler";
 import { globalTheme } from "./style/theme";
 
 const theme = createTheme(globalTheme);
@@ -47,11 +48,20 @@ function App() {
     <ThemeProvider theme={theme}>
       <Header />
 
-      <Box sx={{ flexGrow: 1 }} mt={3}>
+      <Box sx={{ flexGrow: 1 }} mt={2}>
         <Grid container spacing={2} columns={12}>
           <Grid item xs={4}>
             <Item>
-              <LeftSide />
+              <LeftSide mt={2} />
+              <Divider mt={2} />
+              <LeftSide mt={2} />
+              <Divider mt={2} />
+              <LeftSide mt={2} />
+              <Divider mt={2} />
+              <LeftSide mt={2} />
+              <Divider mt={2} />
+              <LeftSide mt={2} />
+              <Divider mt={2} />
             </Item>
           </Grid>
           <Grid item xs={8}>
