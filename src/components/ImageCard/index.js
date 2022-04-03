@@ -14,6 +14,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { PropaneSharp } from "@mui/icons-material";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -28,12 +29,22 @@ const ExpandMore = styled((props) => {
 
 export default function ImageCard(props) {
   const [expanded, setExpanded] = React.useState(false);
+  const [likes, setLikes] = React.useState(false);
+  React.useEffect(() => {
+    setLikes(props.likes);
+  }, [props.likes]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
   const handleClick = () => {
     props.handleClick(props.image, props.likes, props.timestamp);
+  };
+  const handleLike = () => {
+    if (props.likes + 1 === likes) setLikes(likes - 1);
+    else {
+      setLikes(likes + 1);
+    }
   };
   return (
     <Card
@@ -78,11 +89,11 @@ export default function ImageCard(props) {
             // fontWeight: 500,
           }}
         >
-          {props.likes} likes
+          {likes} likes
         </Typography>
       </CardContent>
       <CardActions disableSpacing sx={{ justifyContent: "space-between" }}>
-        <IconButton aria-label="add to favorites">
+        <IconButton aria-label="add to favorites" onClick={handleLike}>
           <FavoriteIcon />
         </IconButton>
         <IconButton aria-label="share">
